@@ -23,7 +23,7 @@ Install Ubuntu 20.04 dekstop image. Follow instructions on [ubuntu.com](https://
 
 ## Nvidia Driver
 
-After installing Ubunut, go ahead with installing the graphic card driver:
+After installing Ubuntu, go ahead with installing the graphic card driver:
 
 ```
 sudo apt-get install nvidia-driver-530
