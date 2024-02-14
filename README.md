@@ -18,6 +18,18 @@
 Please follow the following instructions carefully for setting up your development environment properly. If there are any issues with installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amir-ebram/deep_ros).
 
 
+<div align="center">
+  <p>
+    <a href="" target="_blank">
+      <img width="100%" src="./media/PID.png"></a>
+    <!--
+    <a align="center" href="https://ultralytics.com/yolov5" target="_blank">
+      <img width="100%" src="https://raw.githubusercontent.com/ultralytics/assets/main/yolov5/v70/splash.png"></a>
+    -->
+  </p>
+</div>
+
+
 ## Ubuntu
 
 Install Ubuntu 20.04 dekstop image. Follow instructions on [ubuntu.com](https://releases.ubuntu.com/focal/). You can install it as dual-boot along your Windows but you can't use VM Ware as the GPU is inaccessible over virtual machine.
