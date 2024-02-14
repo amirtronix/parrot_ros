@@ -15,7 +15,7 @@
 - [Python Requirements](#python-requirements)
 
 
-Please follow the following instructions carefully for setting up your development environment properly. If there are any issues with installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amir-ebram/deep_ros).
+Please follow the following instructions carefully for setting up your development environment properly. If there are any issues with installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amirtronics/parrot_ros).
 
 
 <div align="center">
