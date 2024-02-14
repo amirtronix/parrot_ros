@@ -7,7 +7,7 @@
       <img width="100%" src="https://raw.githubusercontent.com/ultralytics/assets/main/yolov5/v70/splash.png"></a>
     -->
   </p>
-  
+</div>
 
 # Installation Guide
 
