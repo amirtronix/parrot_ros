@@ -1,3 +1,5 @@
+![Alt Text](./media/banner.jpg)
+
 # Installation Guide
 
 <!-- ![GIF](./repo/frame/test_pursuit_z.gif) -->
