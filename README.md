@@ -1,4 +1,4 @@
-![Alt Text](./media/banner.jpg)
+![Alt Text](./media/Banner.jpg)
 
 # Installation Guide
 
