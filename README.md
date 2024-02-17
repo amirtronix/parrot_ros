@@ -1,3 +1,4 @@
+
 # Installation Guide
 
 <!-- ![GIF](./repo/frame/test_pursuit_z.gif) -->
@@ -14,7 +15,19 @@
 - [Python Requirements](#python-requirements)
 
 
-Please follow the following instructions carefully for setting up your development environment properly. If there are any issues with installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amir-ebram/deep_ros).
+Please follow the following instructions carefully for setting up your development environment properly. If there are any issues with installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amirtronics/parrot_ros).
+
+
+<div align="center">
+  <p>
+    <a href="" target="_blank">
+      <img width="100%" src="./media/PID.png"></a>
+    <!--
+    <a align="center" href="https://ultralytics.com/yolov5" target="_blank">
+      <img width="100%" src="https://raw.githubusercontent.com/ultralytics/assets/main/yolov5/v70/splash.png"></a>
+    -->
+  </p>
+</div>
 
 
 ## Ubuntu
@@ -23,7 +36,7 @@ Install Ubuntu 20.04 dekstop image. Follow instructions on [ubuntu.com](https://
 
 ## Nvidia Driver
 
-After installing Ubunut, go ahead with installing the graphic card driver:
+After installing Ubuntu, go ahead with installing the graphic card driver:
 
 ```
 sudo apt-get install nvidia-driver-530
