@@ -141,6 +141,12 @@ sudo apt update
 sudo apt install parrot-ue4-empty
 ```
 
+To have access to pysphinx library run:
+
+```
+. /opt/parrot-sphinx/usr/bin/parrot-sphinx-setenv.sh
+```
+
 ## ROS Noetic
 
 ROS or Robot Operating System is a middleware which allows developing roboitcs packages and runtimes. The greatest advantage of ROS is that it comes with predeveloped pipelines for establshing communication between different Python and C++ nodes. To install ROS simply follow the instructions below:
