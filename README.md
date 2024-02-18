@@ -154,7 +154,7 @@ sudo apt update
 sudo apt install parrot-ue4-empty
 ```
 
-To have access to pysphinx library run:
+To have access to pysphinx library run: (add to bash file)
 
 ```
 . /opt/parrot-sphinx/usr/bin/parrot-sphinx-setenv.sh
@@ -228,5 +228,9 @@ roscore
 
 ```
 pip install -r requirements.txt
+
+****
+sudo apt-get -y install xterm
+
 ```
 
