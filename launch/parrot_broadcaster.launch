@@ -1,0 +1,45 @@
+<launch>
+
+	<!-- <node 
+		pkg="deep_drone"
+		type="sp_olympe.py" 
+		name="sphinx_olympe_bridge" 
+		output="screen">
+	</node>
+
+	<node 
+		pkg="deep_drone"
+		type="sp_ctrl.py" 
+		name="sphinx_keyboard_control" 
+		output="screen" 
+		launch-prefix="xterm -e">
+	</node> -->
+
+	<node 
+		pkg="deep_drone"
+		type="sp_broadcaster.py" 
+		name="sphinx_broadcaster_drone" 
+		output="screen">
+
+		<param 
+				name="object" 
+				value="drone" 
+				type="str" 
+		/>
+	</node>
+	
+	<!-- <node 
+		pkg="deep_drone"
+		type="sp_broadcaster.py" 
+		name="sphinx_broadcaster_truck" 
+		output="screen"
+        launch-prefix="xterm -e">
+
+		<param 
+				name="object" 
+				value="truck" 
+				type="str" 
+		/>
+	</node> -->
+
+</launch>
