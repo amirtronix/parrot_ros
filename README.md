@@ -1,5 +1,4 @@
-
-# Installation Guide
+# parrot_ros
 
 ROS driver for [Parrot Anafi](https://www.parrot.com/en/) drones. Based on Official [Parrot Olympe](https://developer.parrot.com/docs/olympe/index.html) (Python SDK) and [Parrot Sphinx](https://developer.parrot.com/docs/sphinx/index.html) (UE4 simulation tool).
 
@@ -21,7 +20,7 @@ ROS driver for [Parrot Anafi](https://www.parrot.com/en/) drones. Based on Offic
 - [Python Requirements](#python-requirements)
 
 
-Please follow the following instructions carefully for setting up your development environment properly. If there are any issues with installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amirtronics/parrot_ros).
+Please follow the following instructions carefully for setting up your development environment. If there are any issues with the installations or the codes, simply open a new issue request on the  [github repo](https://github.com/amirtronics/parrot_ros).
 
 
 <div align="center">
@@ -35,6 +34,8 @@ Please follow the following instructions carefully for setting up your developme
   </p>
 </div>
 
+
+# Installation Guide
 
 ## Ubuntu
 
@@ -234,8 +235,38 @@ roscore
 
 ```
 pip install -r requirements.txt
+```
 
-****
+
+## Pytorch and Yolov5
+
+There are several neural networks libraries out there, most prominently PyTorch and Tensorflow. These libraries provide you with the necessary tools for developing neural networks from scratch. However, developing an optimised acrhictecture from scratch takes time and is a painstaking task, so instead of developing the architecture ourselves, we can simply use fine-tuned networks. Yolov5 is one of the fastest object detection models which is based on Torch. Therefore, PyTorch 1.8 is already in the requirements of Yolov5 which is also compatible with CUDA 11.1 as well. To do so, make a new folder first:
+
+```
+mkdir ~/code
+cd ~/code
+```
+
+Make sure parrot environment is activated:
+
+```
+source ~/parrot/bin/activate
+```
+
+
+Now clone and install yolov5:
+
+
+```
+git clone https://github.com/ultralytics/yolov5  # clone
+cd yolov5
+pip install -r requirements.txt  # install
+```
+
+## Xterm
+
+
+```
 sudo apt-get -y install xterm
 
 ```
