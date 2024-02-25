@@ -1,14 +1,14 @@
 <launch>
 
 	<!-- <node 
-		pkg="deep_drone"
+		pkg="parrot_ros"
 		type="sp_olympe.py" 
 		name="sphinx_olympe_bridge" 
 		output="screen">
 	</node>
 
 	<node 
-		pkg="deep_drone"
+		pkg="parrot_ros"
 		type="sp_ctrl.py" 
 		name="sphinx_keyboard_control" 
 		output="screen" 
@@ -16,7 +16,7 @@
 	</node> -->
 
 	<node 
-		pkg="deep_drone"
+		pkg="parrot_ros"
 		type="sp_broadcaster.py" 
 		name="sphinx_broadcaster_drone" 
 		output="screen">
@@ -29,7 +29,7 @@
 	</node>
 	
 	<!-- <node 
-		pkg="deep_drone"
+		pkg="parrot_ros"
 		type="sp_broadcaster.py" 
 		name="sphinx_broadcaster_truck" 
 		output="screen"

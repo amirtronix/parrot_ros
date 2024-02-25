@@ -1,0 +1,17 @@
+<launch>
+    <arg name="pid_start_time" default="10.0"  /> <!-- Choosing flight time (in seconds) -->
+    <arg name="pulse_mode" default="cmd_pos" /> <!-- Choosing pulse mode (cmd_vel/cmd_pos) -->
+    <arg name="axis" default="z" /> <!-- Choosing pulse axis x, y, z, yaw -->
+    <arg name="pulse_amp" default="1.0" /> <!-- Choosing command value -->
+    <arg name="pulse_width" default="5" /> <!-- Choosing pulse width -->
+	<arg name="pulse_offset" default="2" /> <!-- Choosing pulse offset -->
+    
+	<node pkg="parrot_ros" type="sp_pulse.py"  name="pulse_gen_node"  output="screen">
+		<param name="pulse_mode" value="$(arg pulse_mode)" type="str" />
+		<param name="axis" value="$(arg axis)" type="str" />
+		<param name="pulse_amp" value="$(arg pulse_amp)" type="double" />
+		<param name="pulse_width" value="$(arg pulse_width)" type="double" />	
+		<param name="pulse_offset" value="$(arg pulse_offset)" type="double" />			
+	</node>
+
+</launch>
