@@ -1,7 +1,13 @@
 
 # Installation Guide
 
+ROS driver for [Parrot Anafi](https://www.parrot.com/en/) drones. Based on Official [Parrot Olympe](https://developer.parrot.com/docs/olympe/index.html) (Python SDK) and [Parrot Sphinx](https://developer.parrot.com/docs/sphinx/index.html) (UE4 simulation tool).
+
 <!-- ![GIF](./repo/frame/test_pursuit_z.gif) -->
+
+* Author: [Amir Ebrahimnezhad](https://www.youtube.com/@Amirtronics/videos)
+* Maintainer:[Amir Ebrahimnezhad](https://www.youtube.com/@Amirtronics/videos)
+
 
 ## Table of Contents
 
