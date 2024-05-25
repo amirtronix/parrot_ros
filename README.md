@@ -94,6 +94,12 @@ First things first, you need to change teh default python command:
 sudo apt install python-is-python3
 ```
 
+Now install pip as:
+
+```
+sudo apt install python3-pip
+```
+
 Type python on terminal and double check the default python env which should be 3.8:
 
 ```
