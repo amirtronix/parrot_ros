@@ -104,6 +104,7 @@ python
 Before installing Parrot Olympe and other Python pacakges, it's needed to setup a virtual Python environment (let's call it parrot) for using a newer version of pip (20.3 or higher).
 
 ```
+sudo apt install python3.8-venv
 python -m venv parrot
 source parrot/bin/activate
 ```
