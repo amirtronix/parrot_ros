@@ -177,7 +177,7 @@ To have access to pysphinx library run: (add to bash file)
 
 ### Wifi Fix
 
-If your Wifi is disabled by running Sphinx, simply add "wifi_iface=""" to command line as follows:
+If your Wifi is disabled by running Sphinx, simply add wifi_iface="" to command line as follows:
 
 ```
 sphinx "/opt/parrot-sphinx/usr/share/sphinx/drones/anafi_ai.drone"::firmware="https://firmware.parrot.com/Versions/anafi2/pc/%23latest/images/anafi2-pc.ext2.zip"::wifi_iface=""
