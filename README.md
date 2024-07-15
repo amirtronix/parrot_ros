@@ -4,8 +4,8 @@ ROS driver for [Parrot Anafi](https://www.parrot.com/en/) drones. Based on Offic
 
 <!-- ![GIF](./repo/frame/test_pursuit_z.gif) -->
 
-* Author: [Amir Abramrace](https://www.youtube.com/@abramrace/videos)
-* Maintainer: [Amir Abramrace](https://www.youtube.com/@abramrace/videos)
+* Author: [Amir Ebrahimnezhad](https://amirtronics.com)
+* Maintainer: [Amir Ebrahimnezhad](https://amirtronics.com)
 
 
 ## Table of Contents
