@@ -37,7 +37,11 @@ Please follow the following instructions carefully for setting up your developme
 
 # Installation Guide
 
-## Ubuntu
+## Ubuntu 22.04
+
+To run this package on Ubuntu 22.04 (Jammy) refer to the instructions on [DOCKER](docker/README.md) 
+
+## Ubuntu 20.04
 
 Install Ubuntu 20.04 dekstop image. Follow instructions on [ubuntu.com](https://releases.ubuntu.com/focal/). You can install it as dual-boot along your Windows but you can't use VM Ware as the GPU is inaccessible over virtual machine.
 
