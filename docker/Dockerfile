@@ -7,7 +7,10 @@ RUN echo 'Etc/UTC' > /etc/timezone && \
     ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
     apt-get update && \
     apt-get install -q -y --no-install-recommends tzdata && \
+    apt-get install net-tools && \
+    && apt install --no-install-recommends -y gcc git zip curl htop libgl1 libglib2.0-0 libpython3-dev gnupg g++ libusb-1.0-0 && \
     rm -rf /var/lib/apt/lists/*
+    
 
 # install packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
