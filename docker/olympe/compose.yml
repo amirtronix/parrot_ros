@@ -1,0 +1,24 @@
+services:
+  noetic:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    runtime: nvidia  
+    ipc: host  
+    tty: true
+    container_name: "parrot_container"
+    network_mode: "host"
+    environment:
+      - "DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+      - NVIDIA_VISIBLE_DEVICES=all
+    # volumes:
+    #   - ../parrot_ros:/catkin_ws/src/parrot_ros
+      
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
