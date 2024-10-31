@@ -1,4 +1,4 @@
-#!/home/amirtronics/parrot/bin/python
+#!/opt/conda/bin/python
 
 import os
 import sys
