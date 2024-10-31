@@ -47,11 +47,6 @@ ENV LC_ALL C.UTF-8
 
 ENV ROS_DISTRO noetic
 
-# install ros packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-noetic-ros-core=1.5.0-1* \
-    && rm -rf /var/lib/apt/lists/*
-
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
@@ -64,7 +59,7 @@ RUN rosdep init && \
     rosdep update --rosdistro $ROS_DISTRO
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-noetic-ros-base=1.5.0-1* \
+    ros-noetic-desktop-full=1.5.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install \
@@ -90,7 +85,7 @@ RUN yolo export model=tmp/yolov8n.pt format=edgetpu imgsz=32 || yolo export mode
 RUN yolo export model=tmp/yolov8n.pt format=ncnn imgsz=32
 RUN pip install --no-cache-dir "paddlepaddle>=2.6.0" x2paddle
 RUN pip install --no-cache-dir numpy==1.23.5
-RUN pip install --target=/opt/ros/noetic/lib/python3/dist-packages rospkg
+RUN pip install rospkg
 RUN rm -rf tmp
 
 COPY ./ros_entrypoint.sh /
