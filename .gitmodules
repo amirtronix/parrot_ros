@@ -1,0 +1,3 @@
+[submodule "docker/yolo/ultralytics"]
+	path = docker/yolo/ultralytics
+	url = git@github.com:ultralytics/ultralytics.git
