@@ -53,13 +53,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-    RUN pip install \
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    build-essential \
+    python3-rosdep \
+    python3-rosinstall \
+    python3-vcstools \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN rosdep init && \
+    rosdep update --rosdistro $ROS_DISTRO
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-noetic-ros-base=1.5.0-1* \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install \
     loguru==0.7.2 \
-    pyautogui \
     pynput==1.7.7 \
     bbox_visualizer==0.1.0 \
     joblib==1.4.2 \
-    pyads==3.4.0 \
     multipledispatch
     
 RUN apt upgrade --no-install-recommends -y openssl tar
@@ -73,17 +85,23 @@ ADD https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt $A
 RUN python3 -m pip install --upgrade pip wheel
 RUN pip install --no-cache-dir -e ".[export]" "albumentations>=1.4.6" comet pycocotools
 
+RUN pip install protobuf==3.20.*
 RUN yolo export model=tmp/yolov8n.pt format=edgetpu imgsz=32 || yolo export model=tmp/yolov8n.pt format=edgetpu imgsz=32
 RUN yolo export model=tmp/yolov8n.pt format=ncnn imgsz=32
 RUN pip install --no-cache-dir "paddlepaddle>=2.6.0" x2paddle
 RUN pip install --no-cache-dir numpy==1.23.5
+RUN pip install --target=/opt/ros/noetic/lib/python3/dist-packages rospkg
 RUN rm -rf tmp
 
 COPY ./ros_entrypoint.sh /
+COPY ./my_bashrc.bash /
 COPY main.py .
 
+WORKDIR /catkin_ws
+RUN chmod u+x /ros_entrypoint.sh
+
+RUN echo "source /my_bashrc.bash" >> /root/.bashrc
+RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
-RUN ["chmod", "+x", "/ros_entrypoint.sh"]
-
 CMD ["bash"]
