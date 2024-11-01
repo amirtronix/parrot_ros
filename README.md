@@ -35,7 +35,7 @@ Please follow the following instructions carefully for setting up your developme
 </div>
 
 
-# Installation Guide
+# Installation Guide (On Host)
 
 ## Ubuntu 22.04
 
@@ -290,4 +290,20 @@ pip install -r requirements.txt  # install
 sudo apt-get -y install xterm
 
 ```
+
+
+
+# Installation Guide (Docker)
+
+
+
+Verify Nvidia Docker setup:
+
+```bash
+docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
+```
+
+
+
+
 
