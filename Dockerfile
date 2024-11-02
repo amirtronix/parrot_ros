@@ -76,6 +76,7 @@ WORKDIR $APP_HOME
 RUN git clone https://github.com/ultralytics/ultralytics.git
 
 WORKDIR $YOLO_HOME
+RUN git checkout v8.2.1  
 RUN git remote set-url origin https://github.com/ultralytics/ultralytics.git
 ADD https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt $YOLO_HOME
 

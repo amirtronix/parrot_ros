@@ -3,6 +3,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    image: parrot-ros:1.5.1
     runtime: nvidia  
     ipc: host  
     tty: true
