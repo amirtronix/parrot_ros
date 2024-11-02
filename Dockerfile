@@ -1,7 +1,8 @@
 FROM pytorch/pytorch:2.1.1-cuda12.1-cudnn8-runtime
 SHELL ["/bin/bash", "-c"]
 
-ENV APP_HOME /usr/src/ultralytics
+ENV APP_HOME /usr/src
+ENV YOLO_HOME /usr/src/ultralytics
 ENV MKL_THREADING_LAYER=GNU
 
 ADD https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.ttf \
@@ -72,10 +73,11 @@ RUN pip install \
 RUN apt upgrade --no-install-recommends -y openssl tar
 
 WORKDIR $APP_HOME
+RUN git clone https://github.com/ultralytics/ultralytics.git
 
-COPY ./ultralytics $APP_HOME
+WORKDIR $YOLO_HOME
 RUN git remote set-url origin https://github.com/ultralytics/ultralytics.git
-ADD https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt $APP_HOME
+ADD https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt $YOLO_HOME
 
 RUN python3 -m pip install --upgrade pip wheel
 RUN pip install --no-cache-dir -e ".[export]" "albumentations>=1.4.6" comet pycocotools
@@ -89,13 +91,12 @@ RUN pip install rospkg
 RUN rm -rf tmp
 
 COPY ./ros_entrypoint.sh /
-COPY ./my_bashrc.bash /
-COPY main.py .
+COPY ./container.bash /
 
 WORKDIR /catkin_ws
 RUN chmod u+x /ros_entrypoint.sh
 
-RUN echo "source /my_bashrc.bash" >> /root/.bashrc
+RUN echo "source /container.bash" >> /root/.bashrc
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 
 ENTRYPOINT ["/ros_entrypoint.sh"]

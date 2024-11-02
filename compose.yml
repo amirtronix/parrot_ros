@@ -13,7 +13,7 @@ services:
       - "QT_X11_NO_MITSHM=1"
       - NVIDIA_VISIBLE_DEVICES=all
     volumes:
-      - ../../parrot_ros:/catkin_ws/src/parrot_ros
+      - ./parrot_ros:/catkin_ws/src/parrot_ros
       
     deploy:
       resources:
