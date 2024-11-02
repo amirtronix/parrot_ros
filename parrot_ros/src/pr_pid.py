@@ -1,4 +1,4 @@
-#!/home/username/parrot/bin/python
+#!/home/praetor/parrot/bin/python
 
 import sys
 import rospy

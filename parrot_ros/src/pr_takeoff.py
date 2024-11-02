@@ -1,4 +1,4 @@
-#!/home/amirtronics/parrot/bin/python
+#!/home/praetor/parrot/bin/python
 
 import rospy
 import olympe

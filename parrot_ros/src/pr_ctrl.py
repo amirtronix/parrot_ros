@@ -1,4 +1,4 @@
-#!/opt/conda/bin/python
+#!/home/praetor/parrot/bin/python
 
 from __future__ import print_function
 

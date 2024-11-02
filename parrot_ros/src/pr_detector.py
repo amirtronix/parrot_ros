@@ -1,4 +1,4 @@
-#!/home/amirtronics/parrot/bin/python
+#!/home/praetor/parrot/bin/python
 
 import sys
 import rospy
@@ -15,6 +15,7 @@ import cv2
 import torch
 from pathlib import Path
 import matplotlib.pyplot as plt
+from ultralytics import YOLO
 
 rospack = rospkg.RosPack()
 config_path = rospack.get_path('parrot_ros') + '/config/param.yaml'
@@ -37,8 +38,8 @@ class Detector():
         
         self.image_pub = rospy.Publisher("/drone/image_annotated",Image, queue_size=10)
 
-        self.model_yolo = torch.hub.load('ultralytics/yolov5', 'yolov5m')
-        # torch.save(self.model_yolo.state_dict(), '/home/amirtronics/catkin_ws/src/parrot_ros/yolov5x_model_state.pt')
+        self.model_yolo = YOLO("/home/praetor/catkin_ws/src/parrot_ros/parrot_ros/src/yolov8n.pt")
+
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber(CAMERA_TOPIC, Image, self.image_callback)
         self.save_video = save_video
@@ -73,12 +74,13 @@ class Detector():
         pass
 
     def predict(self):
-        self.results = self.model_yolo(self.cv_image)
+        self.results =  self.model_yolo(self.cv_image, verbose=False)
 
 
     def annotate(self):
-        cv2.imshow('Screen', self.results.render()[0])
-        self.image_pub.publish(self.bridge.cv2_to_imgmsg(self.results.render()[0], "bgr8"))
+        img = self.results[0].plot()  # This plots the detections on the image
+        cv2.imshow('Screen', img)
+        self.image_pub.publish(self.bridge.cv2_to_imgmsg(img, "bgr8"))
         cv2.waitKey(3)
 
     def __del__(self):
