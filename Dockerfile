@@ -16,7 +16,6 @@ RUN echo 'Etc/UTC' > /etc/timezone && \
     apt-get install -q -y --no-install-recommends tzdata && \
     rm -rf /var/lib/apt/lists/*
     
-    # install packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
     python3 python3-distutils curl libgl1 net-tools iputils-ping \
     gcc git zip unzip htop libgl1 libglib2.0-0 libstdc++6 libpython3-dev gnupg g++ libusb-1.0-0 libsm6 \
@@ -34,12 +33,9 @@ RUN set -eux; \
     gpgconf --kill all; \
     rm -rf "$GNUPGHOME"
     
-RUN python3 <(curl https://bootstrap.pypa.io/get-pip.py)
-        
-        # Install parrot-olympe
+RUN python3 <(curl https://bootstrap.pypa.io/get-pip.py)        
 RUN python3 -m pip install parrot-olympe
         
-    # setup sources.list
 RUN echo "deb [ signed-by=/usr/share/keyrings/ros1-latest-archive-keyring.gpg ] http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros1-latest.list
 
 # setup environment
@@ -97,8 +93,8 @@ COPY ./container.bash /
 WORKDIR /catkin_ws
 RUN chmod u+x /ros_entrypoint.sh
 
-RUN echo "source /container.bash" >> /root/.bashrc
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
+RUN echo "source /container.bash" >> /root/.bashrc
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
