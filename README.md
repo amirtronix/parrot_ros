@@ -303,7 +303,22 @@ Verify Nvidia Docker setup:
 docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
 ```
 
+Build parrot-ros image:
+
+```bash
+docker compose build
+```
+
+To run the container, run:
+
+```bash
+docker compose up -d
+```
 
 
+To log into the container on your terminal:
 
+```bash
+docker exec -it parrot_container bash
+```
 
