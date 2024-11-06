@@ -1,4 +1,4 @@
-#!/home/praetor/parrot/bin/python
+#!/home/legatus/parrot/bin/python
 
 import sys
 import rospy
@@ -38,7 +38,7 @@ class Detector():
         
         self.image_pub = rospy.Publisher("/drone/image_annotated",Image, queue_size=10)
 
-        self.model_yolo = YOLO("/home/praetor/catkin_ws/src/parrot_ros/parrot_ros/src/yolov8n.pt")
+        self.model_yolo = YOLO("/home/legatus/catkin_ws/src/parrot_ros/parrot_ros/yolov8n.pt")
 
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber(CAMERA_TOPIC, Image, self.image_callback)
@@ -64,8 +64,7 @@ class Detector():
 
         self.frame_count += 1
 
-        
-        
+
         logger.info(f"image count: {self.frame_count}")
         self.rate.sleep()
         

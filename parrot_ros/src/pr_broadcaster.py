@@ -1,4 +1,4 @@
-#!/home/praetor/parrot/bin/python
+#!/home/legatus/parrot/bin/python
 
 from re import A
 from signal import SIG_DFL
