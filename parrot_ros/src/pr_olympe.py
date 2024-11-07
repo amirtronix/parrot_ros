@@ -14,6 +14,7 @@ import shlex
 import subprocess
 import tempfile
 import threading
+from loguru import logger
 
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
@@ -45,12 +46,13 @@ class OlympeBridge():
         self.processing_thread = threading.Thread(target=self.yuv_frame_processing)
         self.renderer = None
         self.hoveringStatus = False
+        self.isDroneConnected = False
 
 
-        rospy.Subscriber('/drone/cmd_vel', Twist, self.cmd_vel_callback)
-        rospy.Subscriber('/drone/takeoff', String, self.takeoff_callback)
-        rospy.Subscriber('/drone/land', String, self.land_callback)
-        self.image_pub = rospy.Publisher("/drone/image_raw",Image, queue_size=10)
+        self.cmd_msg_sub = rospy.Subscriber("/parrot/cmd_status", String, self._cmd_msg_callback)
+        self.cmd_vel_sub = rospy.Subscriber("/parrot/cmd_vel", Twist, self._cmd_vel_callback)
+       
+        self.image_pub = rospy.Publisher("/parrot/image_raw",Image, queue_size=10)
 
 
         self.bridge = CvBridge()
@@ -64,26 +66,48 @@ class OlympeBridge():
         self.cmd_vel = Twist()
         self.control = False
 
+    def connect_parrot(self):
+        logger.info("Connecting to {}".format(DRONE_IP))
+        self.drone.connect()
+        self.isDroneConnected = self.drone.connected
+
+        if not self.isDroneConnected:
+            logger.error("Could not connect to the drone at {}".format(DRONE_IP))
+            exit(0)
+
+        else:
+            logger.success("Connected to the drone at {}".format(DRONE_IP))
+
+
     def start(self):
-        # Connect the the drone
-        assert self.drone.connect(retry=3)
+        if self.isDroneConnected:
+            if DRONE_RTSP_PORT is not None:
+                self.drone.streaming.server_addr = f"{DRONE_IP}:{DRONE_RTSP_PORT}"
 
-        if DRONE_RTSP_PORT is not None:
-            self.drone.streaming.server_addr = f"{DRONE_IP}:{DRONE_RTSP_PORT}"
+            assert self.drone(TakeOff()).wait().success()
+            self.hoveringStatus = True
 
-        assert self.drone(TakeOff()).wait().success()
-        self.hoveringStatus = True
+            # Setup your callback functions to do some live video processing
+            self.drone.streaming.set_callbacks(
+                raw_cb=self.yuv_frame_cb,
+            )
+            # Start video streaming
+            self.drone.streaming.start()
+            # self.renderer = PdrawRenderer(pdraw=self.drone.streaming)
+            self.running = True
+            self.processing_thread.start()
+            logger.success("Streaming initiated!")
+        
+    def stop(self):
+        self.running = False
+        self.processing_thread.join()
+        if self.renderer is not None:
+            self.renderer.stop()
+        # Properly stop the video stream and disconnect
+        assert self.drone.streaming.stop()
+        assert self.drone.disconnect()
+        self.h264_stats_file.close()
 
-        # Setup your callback functions to do some live video processing
-        self.drone.streaming.set_callbacks(
-            raw_cb=self.yuv_frame_cb,
-        )
-        # Start video streaming
-        self.drone.streaming.start()
-        # self.renderer = PdrawRenderer(pdraw=self.drone.streaming)
-        self.running = True
-        self.processing_thread.start()
-    
     def yuv_frame_cb(self, yuv_frame):
         """
         This function will be called by Olympe for each decoded YUV frame.
@@ -102,8 +126,6 @@ class OlympeBridge():
                 cv2frame = cv2.cvtColor(x, self.cv2_cvt_color_flag[yuv_frame.format()]) 
                 cv2.imwrite("/home/accurpress/catkin_ws/src/deep_ros/repo/frames/img_sphinx.jpg", cv2frame)
                 self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv2frame, "bgr8"))
-                if self.hoveringStatus:
-                    print(cv2frame.shape)
 
                 
 
@@ -114,57 +136,63 @@ class OlympeBridge():
             # pool exhaustion.
             yuv_frame.unref()
 
-    def cmd_vel_callback(self, msg):
-        self.cmd_vel.linear.x, self.cmd_vel.linear.y, self.cmd_vel.linear.z = [msg.linear.x, msg.linear.y, msg.linear.z]
-        self.cmd_vel.angular.x, self.cmd_vel.angular.y, self.cmd_vel.angular.z = [msg.angular.x, msg.angular.y, msg.angular.z]
+    def _cmd_vel_callback(self, msg):
+        self.cmd_vel.linear.x = msg.linear.x
+        self.cmd_vel.linear.y = msg.linear.y
+        self.cmd_vel.linear.z = msg.linear.z
 
-    def takeoff_callback(self, msg):
-        print("Asserting Takeoff!")
-        assert self.drone(TakeOff()).wait().success()
-        print("Takeoff Successful!")
-        self.hoveringStatus = True
+        self.cmd_vel.angular.z = msg.angular.z
 
-    def land_callback(self, msg):
-        print("Asserting Landing!")
-        assert self.drone(Landing()).wait().success()
-        print("Landing Successful!")
-        self.hoveringStatus = False
+        logger.info("cmd_vel received!")
 
+    def _cmd_msg_callback(self, msg):
+        self.cmd_msg = msg.data
+        if self.cmd_msg == "takeoff":
+            assert self.drone(TakeOff()).wait().success()
+            logger.success("Takeoff successful!")
+
+        elif self.cmd_msg == "land":
+            assert self.drone(Landing()).wait().success()
+            logger.success("Landing successful!")
 
     def run(self):
-
         self.drone(
-            PCMD(
-                1,
+            PCMD(1,
+                int(-self.cmd_vel.linear.y),
                 int(self.cmd_vel.linear.x),
-                int(self.cmd_vel.linear.y),
                 int(-self.cmd_vel.angular.z),
                 int(self.cmd_vel.linear.z),
-                timestampAndSeqNum=0,
+                timestampAndSeqNum = 0 
             )
         )
         self.control  = False
 
-        if self.hoveringStatus:
-            print("x_cmd = ", int(self.cmd_vel.linear.x), end = ' ')
-            print("y_cmd = ", int(self.cmd_vel.linear.y), end = ' ')
-            print("z_cmd = ", int(self.cmd_vel.linear.z), end = ' ')
-            print("Yaw_cmd = ", -int(self.cmd_vel.angular.z))
-
         time.sleep(0.05)
 
+    
 def main(args):
 
     olympe_bridge = OlympeBridge()
+    olympe_bridge.connect_parrot()
     olympe_bridge.start()
 
-    while not rospy.is_shutdown():
+    try:
+        logger.info("in loop")
+        while not rospy.is_shutdown():
 
-        olympe_bridge.run()
-        olympe_bridge.rate.sleep()
+            olympe_bridge.run()
+            olympe_bridge.rate.sleep()
 
-    olympe_bridge.drone(Landing())
-    print("Shutting down")
+
+    except KeyboardInterrupt:
+        print("\nShutting down")
+        cv2.destroyAllWindows()
+
+    finally:
+        olympe_bridge.stop()
+
+
+    
 
 if __name__ == "__main__":
     main(sys.argv)

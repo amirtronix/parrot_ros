@@ -2,4 +2,4 @@ image_width: 1280
 image_height: 720
 
 ros_rate: 25
-camera_topic: "/drone/image_raw"
+camera_topic: "/parrot/image_raw"

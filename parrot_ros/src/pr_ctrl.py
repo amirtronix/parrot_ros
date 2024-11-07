@@ -48,12 +48,13 @@ CTRL-C to quit
 """
 
 moveBindings = {
-        'i':(0,1,0,0),
+        'i':(1,0,0,0),
         'o':(0,0,0,-1),
-        'j':(-1,0,0,0),
-        'l':(1,0,0,0),
+        'j':(0,1,0,0),
+        'l':(0,-1,0,0),
         'u':(0,0,0,1),
-        ',':(0,-1,0,0),
+        ',':(-1,0,0,0),
+        '.':(-1,0,0,1),
         'm':(-1,0,0,-1),
         't':(0,0,1,0),
         'b':(0,0,-1,0),
@@ -77,9 +78,8 @@ statusBindings={
 class PublishThread(threading.Thread):
     def __init__(self, rate):
         super(PublishThread, self).__init__()
-        self.publisher = rospy.Publisher('/drone/cmd_vel', TwistMsg, queue_size = 1)
-        self.publisherTakeoff = rospy.Publisher('/drone/takeoff', String, queue_size = 10)
-        self.publisherLand = rospy.Publisher('/drone/land', String, queue_size = 10)
+        self.publisher = rospy.Publisher('/parrot/cmd_vel', TwistMsg, queue_size = 1)
+        self.publisherStatus = rospy.Publisher('/parrot/cmd_status', String, queue_size = 10)
         self.x = 0.0
         self.y = 0.0
         self.z = 0.0
@@ -247,9 +247,9 @@ if __name__=="__main__":
             elif key in statusBindings.keys():
                 flightStatus = statusBindings[key]
                 if flightStatus == "takeoff":
-                    pub_thread.publisherTakeoff.publish(flight_msg)
+                    pub_thread.publisherStatus.publish(flightStatus)
                 elif flightStatus == "land":
-                    pub_thread.publisherLand.publish(flight_msg)
+                    pub_thread.publisherStatus.publish(flightStatus)
             else:
                 # Skip updating cmd_vel if key timeout and robot already
                 # stopped.
@@ -268,6 +268,6 @@ if __name__=="__main__":
         print(e)
 
     finally:
-        pub_thread.publisherLand.publish(flight_msg)
+        pub_thread.publisherStatus.publish("land")
         pub_thread.stop()
         restoreTerminalSettings(settings)

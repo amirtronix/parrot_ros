@@ -36,7 +36,7 @@ class Detector():
     def __init__(self, save_video=False, save_frame=False):
         rospy.init_node('sphinx_stream_node')
         
-        self.image_pub = rospy.Publisher("/drone/image_annotated",Image, queue_size=10)
+        self.image_pub = rospy.Publisher("/parrot/image_annotated",Image, queue_size=10)
 
         self.model_yolo = YOLO("/home/praetor/catkin_ws/src/parrot_ros/parrot_ros/src/yolov8n.pt")
 
