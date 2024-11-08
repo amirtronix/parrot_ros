@@ -7,10 +7,13 @@ import yaml
 import datetime
 import os
 from loguru import logger
+import time
 
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
+import numpy as np
+
 
 import torch
 from pathlib import Path
@@ -51,10 +54,12 @@ class Detector():
         self.frame_count = 0
         self.rate = rospy.Rate(ROS_RATE)
 
+        self.logger_time = 0
+
     def image_callback(self, msg):
         try:
             img = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-            self.cv_image = cv2.resize(img, (0,0), fx=0.75, fy=0.75)
+            self.cv_image = cv2.resize(img, (0,0), fx=0.4, fy=0.4)
         except Exception as e:
             print(e)
             return
@@ -65,8 +70,15 @@ class Detector():
         self.frame_count += 1
 
         
+        if (time.process_time() - self.logger_time) > 0.5:
+            logger.success(f"Image processed: {self.frame_count}")
+            for img_result in self.results:
+                for box_item in img_result.boxes.cpu().numpy():
+                    item_class = int(box_item.cls)
+                    print("Detected Item: ", img_result.names[item_class], box_item.xyxy)
+            
+            self.logger_time = time.process_time()
         
-        logger.info(f"image count: {self.frame_count}")
         self.rate.sleep()
         
         
@@ -75,6 +87,7 @@ class Detector():
 
     def predict(self):
         self.results =  self.model_yolo(self.cv_image, verbose=False)
+
 
 
     def annotate(self):
