@@ -178,6 +178,10 @@ To have access to pysphinx library run: (add to bash file)
 . /opt/parrot-sphinx/usr/bin/parrot-sphinx-setenv.sh
 ```
 
+```
+sudo usermod -a -G firmwared $USER
+```
+
 
 ### Wifi Fix
 
